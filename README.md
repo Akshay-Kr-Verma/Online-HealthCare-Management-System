@@ -20,37 +20,11 @@ This project is built using Java Swing (GUI), JDBC for database connectivity, an
 
 
 --Database Setup
--Before running the application, you must set up the MySQL database.
--Open MySQL Workbench or Command Line.
-
--Run the following SQL commands:
-
-CREATE DATABASE healthcare_db;
-USE healthcare_db;
-
-CREATE TABLE users (
-id INT AUTO_INCREMENT PRIMARY KEY,
-username VARCHAR(50) UNIQUE,
-password VARCHAR(50),
-role VARCHAR(20)
-);
-
-CREATE TABLE appointments (
-id INT AUTO_INCREMENT PRIMARY KEY,
-patient_name VARCHAR(100),
-doctor_name VARCHAR(100),
-date VARCHAR(20),
-status VARCHAR(20)
-);
-
-INSERT INTO users (username, password, role) VALUES ('admin', 'admin123', 'Admin');
-
-
--Update the "src/dao/DBConnection.java" file with your local MySQL password.
-
+-Every time the app runs, a window pops up asking for user's MySQL password to establish database connection on localhost. After entering the correct password user can register themselves as per their role(patient or doctor) and continue to use the application.
+-There's also hard coded credentials for admin, username: admin, password: admin123 .
 
 --**How to Run**
-Method 1: Batch File (Windows)
+-From a windows batch file named "run". 
 Double-click the "run.bat" file located in the main project folder.
 The application will compile and launch automatically.
 
