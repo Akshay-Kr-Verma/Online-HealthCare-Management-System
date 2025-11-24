@@ -4,13 +4,18 @@ import dao.DBConnection;
 import gui.AdminDashboard;
 import gui.DoctorDashboard;
 import gui.PatientDashboard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
 public class MainApp {
     public static void main(String[] args) {
-        // Start the Application
+
+        // FIRST: Create database + tables if needed, and ask for MySQL password
+        DBConnection.setupDatabase();
+
+        // THEN: Start the Application UI
         SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
     }
 }
@@ -85,14 +90,11 @@ class LoginFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Login Successful! Welcome " + role);
                 this.dispose(); // Close login window
 
-                // --- CRITICAL CHANGE HERE ---
-                // We now pass the 'user' variable to the PatientDashboard
                 if (role.equalsIgnoreCase("Admin")) {
                     new AdminDashboard().setVisible(true);
                 } else if (role.equalsIgnoreCase("Doctor")) {
                     new DoctorDashboard(user).setVisible(true);
                 } else if (role.equalsIgnoreCase("Patient")) {
-                    // Pass the username so the dashboard knows who logged in
                     new PatientDashboard(user).setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(this, "Unknown Role: " + role);
@@ -114,7 +116,7 @@ class LoginFrame extends JFrame {
 class RegistrationFrame extends JFrame {
     JTextField userField = new JTextField(15);
     JPasswordField passField = new JPasswordField(15);
-    JComboBox<String> roleCombo = new JComboBox<>(new String[] { "Patient", "Doctor" });
+    JComboBox<String> roleCombo = new JComboBox<>(new String[]{"Patient", "Doctor"});
 
     public RegistrationFrame() {
         setTitle("New User Registration");
@@ -152,6 +154,11 @@ class RegistrationFrame extends JFrame {
         }
 
         try (Connection conn = DBConnection.getConnection()) {
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Database Connection Failed!");
+                return;
+            }
+
             String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, newUser);
