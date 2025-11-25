@@ -25,8 +25,8 @@ This project is built using Java Swing (GUI), JDBC for database connectivity, an
 
 --**How to Run**
 -From a windows batch file named "run". 
-Double-click the "run.bat" file located in the main project folder.
-The application will compile and launch automatically.
+Double-click the "run.bat" file located in the main project folder. Enter your MySQL password for database setup by the application, once the correct password is entered
+the application will compile and launch automatically.
 
 Admin Login: admin / admin123
 
